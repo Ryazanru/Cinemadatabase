@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVShows</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="./js/tvshows.js"></script>
+    <script src="./js/common.js"></script>
+    <link rel="stylesheet" href="./css/common.css">
+
+
+</head>
+
+<body style="margin: 0; background-color: black !important;">
+
+    <!-- ^  Main body  ^ -->
+
+
+    <nav style="padding-top: 0px; padding-bottom: 0px;" class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a style="margin: 15px; color:white;" class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div style="margin: 15px;" class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="./Movies.html">Movies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./TVShows.html">TV Shows</a>
+                    </li>
+
+
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" id="searchbar" placeholder="Search"
+                        aria-label="Search">
+                    <button class="btn btn-primary" onclick="searchparams()" type="button">Search</button>
+                    <!--
+                        default button type = submit will try to redirect to different page ^
+                        if different page is not specified[action ="link"], search will redirect to current page
+                    -->
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!--  ^  Navbar code  ^  -->
+
+    <h1 style="height: 60px;" class="heading" id="pageheading">Trending TV Shows</h1>
+
+    <!-- ^ Heading code ^ -->
+
+    <div class="container-fluid" id="display">
+        <div class="btn-group" role="group" id="buttongroup" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="daybtn" autocomplete="off">
+            <label onclick="fetchshows(this.id)" id="dayshowsbtn" class="btn btn-outline-primary btn-lg btn-size"
+                for="daybtn">Day</label>
+            <!-- id of label passed as parameter to fetchshows function-->
+
+            <input type="radio" class="btn-check" name="btnradio" id="weekbtn" autocomplete="off" checked>
+            <label onclick="fetchshows(this.id)" id="weekshowsbtn" class="btn btn-outline-primary btn-lg btn-size"
+                for="weekbtn">Week</label>
+            <!-- id of label passed as parameter to fetchshows function-->
+
+        </div>
+
+        <!-- ^ Day/Week Buttons ^ -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- <h5 class="modal-title" id="staticBackdropLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+
+                    <!-- rating, raters, movie title, movie runtime-->
+                    <div style="display: flex;">
+
+                        <img id="popupimage" style="width: 30%; padding: 16px;" src="./images/thetomorrowwar.jpg"
+                            alt="tomwar">
+
+                        <div>
+                            <p style="margin-top: 20px;"><span class="popuprating" id="popuprating">8.8</span> <span
+                                    id="popupraters">40,556</span></p>
+
+                            <h4 style="margin-bottom: 0px;
+                  color: lightskyblue;" id="popuptitle">The Tomorrow War</h4>
+                            <p id="popupruntime">1 hour 45 minutes</p>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+
+                    <!-- modals go here -->
+
+                    <h2 style="color: #95c6f1; margin: 0px;">CAST</h2>
+                    <div class="cast-container">
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Understood</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="personmodal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="actorname">Modal title</h5> <!-- actor name -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display: flex;">
+                            <img id="popupimage2" style="width: 30%; padding: 16px; height: 0%;" src="./images/thetomorrowwar.jpg"
+                                alt="tomwar"> <!-- actor image -->
+                                <div>
+                                    <p style="text-decoration:underline;"><span id="age"> </span> years old</p>
+                                    <p id="bio">actor bio</p>
+                                </div>
+                        </div>
+                        
+                        <h2 style="text-decoration:underline; margin: 0px;">Seen in</h2>
+                        <div class="cast-container" id="actor-container">
+                            ...
+                        </div>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ^ popup details code ^ -->
+
+        <div class="row" style="margin: 12px;">
+
+
+
+        </div>
+
+        <!-- ^ Movies/TV Shows go here ^ -->
+
+        <div>
+            <button id="showmorebtn" onclick="moreclick()"> Show More </button>
+        </div>
+
+        <!-- ^ Show more button code ^ -->
+
+    </div>
+
+    <!-- ^ container for display code ^ -->
+
+
+    <script>
+        var query;
+        var pagenumber = 1;
+        var page = 2;
+        var type;
+        // apikey: 1972cf9a9940de5dbf03a85062b98f06
+
+        
+
+
+        // use async when using fetch 
+        // fetch requires await
+
+        
+
+        
+
+        
+
+       
+
+        
+
+
+
+        // when clicked, moreclick will take both api's and use btnid to determine which to use.
+        // choosen api will have page number appended to url to display to div cration function.
+
+        
+
+        
+
+        
+
+        //! pass person details for popup !//
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movies</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="./js/common.js"></script>
+  <link rel="stylesheet" href="./css/common.css">
+
+</head>
+
+<body style="margin: 0; background-color: black !important;">
+  
+  <nav style="padding-top: 0px; padding-bottom: 0px; " class="navbar navbar-expand-lg navbar-light ">
+    <div class="container-fluid">
+      <a style="margin: 15px; color:white;" class="navbar-brand" href="#">Navbar</a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div style="margin: 15px;" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./Movies.html">Movies</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./TVShows.html">TV Shows</a>
+          </li>
+
+
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchbar">
+          <button onclick="searchparams()" class="btn btn-primary" type="button">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <h1 class="heading" id="pageheading">Trending Movies</h1>
+  <div id="moviecat" class="container-fluid">
+    <div class="btn-group" role="group" id="buttongroup" aria-label="Basic radio toggle button group">
+      <input type="radio" class="btn-check" name="btnradio" id="daybtn" autocomplete="off">
+      <label onclick="fetchmovies(this.id)" id="daymovies" class="btn btn-outline-primary btn-lg btn-size"
+          for="daybtn">Day</label>
+      <!-- id of label passed as parameter to fetchshows function-->
+
+      <input type="radio" class="btn-check" name="btnradio" id="weekbtn" autocomplete="off" checked>
+      <label onclick="fetchmovies(this.id)" id="weekmovies" class="btn btn-outline-primary btn-lg btn-size"
+          for="weekbtn">Week</label>
+      <!-- id of label passed as parameter to fetchshows function-->
+
+  </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- <h5 class="modal-title" id="staticBackdropLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+
+                    <!-- rating, raters, movie title, movie runtime-->
+                    <div style="display: flex;">
+
+                        <img id="popupimage" style="width: 30%; padding: 16px;" src="./images/thetomorrowwar.jpg"
+                            alt="tomwar">
+
+                        <div>
+                            <p style="margin-top: 20px;"><span class="popuprating" id="popuprating">8.8</span> <span
+                                    id="popupraters">40,556</span></p>
+
+                            <h4 style="margin-bottom: 0px;
+                  color: lightskyblue;" id="popuptitle">The Tomorrow War</h4>
+                            <p id="popupruntime">1 hour 45 minutes</p>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+
+                    <!-- modals go here -->
+
+                    <h2 style="color: #95c6f1; margin: 0px;">CAST</h2>
+                    <div class="cast-container">
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Understood</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="personmodal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="actorname">Modal title</h5> <!-- actor name -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display: flex;">
+                            <img id="popupimage2" style="width: 30%; padding: 16px; height: 0%;" src="./images/thetomorrowwar.jpg"
+                                alt="tomwar"> <!-- actor image -->
+                                <div>
+                                    <p style="text-decoration:underline;"><span id="age"> </span> years old</p>
+                                    <p id="bio">actor bio</p>
+                                </div>
+                        </div>
+                        
+                        <h2 style="text-decoration:underline; margin: 0px;">Seen in</h2>
+                        <div class="cast-container" id="actor-container">
+                            ...
+                        </div>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="row" style="margin: 12px;">
+
+      <!-- onclick", "nextpage(query,pagenumber)
+            if two onclicks, second overides first  -->
+    </div>
+    <div>
+      <button id="showmorebtn" onclick="nexttrendingpage(pagenumbermain)">Show More</button>
+      <!-- next page of default load displays appended-->
+    </div>
+
+
+  </div>
+
+
+  <script>
+    var pagenumber = 1;
+    var query;
+    var pagenumbermain = 1;
+    var displaybutton = "weekmovies";
+     
+    
+
+    nexttrendingpage(pagenumbermain);
+
+    // var displaybutton;
+    // defaultfunction(displaybutton){
+      // if{
+//      btnid = "daybutton"
+//      displaybutton = daymovies
+ //     }
+   //   else{
+//      displaybutton = weekmovies
+     // }
+      // // second function(displaybutton)
+    // } 
+    
+
+    
+
+    // can call function before declaration as functions are launched first;
+
+    async function nexttrendingpage(i){ // next page function
+       
+      var nextmovie;
+      if(displaybutton == "daymovies"){
+        nextmovie = await fetch("https://api.themoviedb.org/3/trending/movie/day?api_key=1972cf9a9940de5dbf03a85062b98f06&page="+i);
+      }
+      else if(displaybutton == "weekmovies"){
+        nextmovie = await fetch("https://api.themoviedb.org/3/trending/movie/week?api_key=1972cf9a9940de5dbf03a85062b98f06&page="+i);
+      }
+      
+
+      
+      
+      console.log(pagenumbermain);
+      
+
+      var moviesdata = await nextmovie.json()
+      console.log(moviesdata);
+      moviesdata.results.forEach(movie => {
+        var newmovie = document.createElement("div");
+        newmovie.setAttribute("class", "shows col-md-3");
+        newmovie.setAttribute("id", movie.id);
+        newmovie.setAttribute("onclick", "movieparamsclick(this.getAttribute(`id`))");
+
+        var newimg = document.createElement("img");
+        newimg.setAttribute("class", "showsimage");
+        newimg.setAttribute("src", "https://image.tmdb.org/t/p/original" + movie.poster_path);
+        newimg.setAttribute("alt", movie.id);
+        newmovie.appendChild(newimg);
+
+        var title = document.createElement("div");
+        title.setAttribute("class", "showsinfo");
+        newmovie.appendChild(title);
+
+        var heading = document.createElement("h3");
+        heading.innerText = movie.original_title;
+        title.appendChild(heading);
+
+        var rating = document.createElement("h3");
+        rating.setAttribute("class", "rating");
+        rating.innerText = movie.vote_average;
+        title.appendChild(rating);
+
+        document.getElementsByClassName("row")[0].appendChild(newmovie);
+
+        
+      });
+
+      
+      pagenumbermain++; // 2
+      
+    }
+
+    async function fetchmovies(btnId){ // default load
+
+      
+
+      if(btnId == "daymovies"){
+        
+        displaybutton = "daymovies";
+        pagenumbermain = 1;
+      }
+      else if(btnId == "weekmovies"){
+        
+        displaybutton = "weekmovies";
+        pagenumbermain = 1;
+      }
+      
+
+      document.getElementsByClassName("row")[0].innerHTML = "";
+
+      nexttrendingpage(pagenumbermain);
+
+
+      }
+      
+
+      
+
+    
+
+
+
+
+          // rename nav bar
+          // add next page functionality to trending movies
+
+
+
+
+
+
+
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
